@@ -385,11 +385,3 @@ def save_attn_map(attn_map, title, save_path):
     normalized_attn_map = normalized_attn_map.astype(np.uint8)
     image = Image.fromarray(normalized_attn_map)
     image.save(save_path, format='PNG', compression=0)
-
-
-def get_attn_map_by_token(net_attn_maps, tokens, target_token):
-    for i, (token, attn_map) in enumerate(zip(tokens, net_attn_maps)):
-        if not target_token in token:
-            continue
-        return attn_map
-    return attn_map
