@@ -23,6 +23,6 @@ image = pipe(prompt).images[0]
 image.save('test.png')
 
 dir_name = "attn_maps"
-net_attn_maps = get_net_attn_map(target_size=image.size)
+net_attn_maps = get_net_attn_map()
 net_attn_maps = resize_net_attn_map(net_attn_maps, image.size)
 save_net_attn_map(net_attn_maps, dir_name, pipe.tokenizer, prompt)
