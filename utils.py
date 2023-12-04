@@ -108,7 +108,6 @@ def scaled_dot_product_attention(query, key, value, attn_mask=None, dropout_p=0.
 
     return torch.dropout(attn_weight, dropout_p, train=True) @ value, attn_weight
 
-
 def attn_call2_0(
         self,
         attn: Attention,
@@ -307,7 +306,11 @@ def prompt2tokens(tokenizer, prompt):
     return tokens
 
 
-def upscale(attn_map, target_dim):
+def upscale(attn_map, target_size, detach=True):
+    
+    if detach:
+        attn_map = attn_map.cpu()
+
     attn_map = torch.mean(attn_map, dim=0) # (10, 32*32, 77) -> (32*32, 77)
     attn_map = attn_map.permute(1,0) # (32*32, 77) -> (77, 32*32)
 
@@ -315,8 +318,9 @@ def upscale(attn_map, target_dim):
     length = int(dim**0.5)
     attn_map = attn_map.view(attn_map.shape[0], length, -1) # (77, 32,32)
 
-    target_length = int(target_dim**0.5)
-    target_size = (target_length, target_length) # (64,64)
+    # target_length = int(target_dim**0.5)
+    # target_size = (target_length, target_length) # (64,64)
+    
     attn_map = attn_map.unsqueeze(0) # (77,32,32) -> (1,77,32,32)
     attn_map = F.interpolate(
         attn_map.to(dtype=torch.float32),
@@ -330,7 +334,7 @@ def upscale(attn_map, target_dim):
     return attn_map
 
 
-def get_net_attn_map(batch_size=2, instance_or_negative=False):
+def get_net_attn_map(target_size=(64,64), batch_size=2, instance_or_negative=False):
     net_attn_maps = []
     idx = 0 if instance_or_negative else 1
     for name, attn_map in attn_maps.items():
@@ -338,11 +342,11 @@ def get_net_attn_map(batch_size=2, instance_or_negative=False):
         if len(attn_map.shape) == 4:
             attn_map = attn_map.squeeze()
 
-        attn_map = upscale(attn_map, 64*64) # (10,32*32,77) -> (77,64*64)
+        attn_map = upscale(attn_map, target_size) # (10,32*32,77) -> (77,64*64)
         net_attn_maps.append(attn_map) # (10,32*32,77) -> (77,64*64)
 
     net_attn_maps = torch.mean(torch.stack(net_attn_maps,dim=0),dim=0)
-    net_attn_maps = net_attn_maps.reshape(net_attn_maps.shape[0], 64,64) # (77,64*64) -> (77,64,64)
+    net_attn_maps = net_attn_maps.reshape(net_attn_maps.shape[0], target_size[0], target_size[1]) # (77,64*64) -> (77,64,64)
 
     return net_attn_maps
 
