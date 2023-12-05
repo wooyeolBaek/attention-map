@@ -307,38 +307,42 @@ def prompt2tokens(tokenizer, prompt):
     return tokens
 
 
-def upscale(attn_map, target_dim):
+# TODO: generalize for rectangle images
+def upscale(attn_map, target_size):
     attn_map = torch.mean(attn_map, dim=0) # (10, 32*32, 77) -> (32*32, 77)
     attn_map = attn_map.permute(1,0) # (32*32, 77) -> (77, 32*32)
 
-    dim = attn_map.shape[1]
-    length = int(dim**0.5)
-    attn_map = attn_map.view(attn_map.shape[0], length, -1) # (77, 32,32)
+    if target_size[0]*target_size[1] != attn_map.shape[1]:
+        temp_size = (target_size[0]//2, target_size[1]//2)
+        attn_map = attn_map.view(attn_map.shape[0], *temp_size) # (77, 32,32)
+        attn_map = attn_map.unsqueeze(0) # (77,32,32) -> (1,77,32,32)
 
-    target_length = int(target_dim**0.5)
-    target_size = (target_length, target_length) # (64,64)
-    attn_map = attn_map.unsqueeze(0) # (77,32,32) -> (1,77,32,32)
-    attn_map = F.interpolate(
-        attn_map.to(dtype=torch.float32),
-        size=target_size,
-        mode='bilinear',
-        align_corners=False
-    ).squeeze() # (77,64,64)
+        attn_map = F.interpolate(
+            attn_map.to(dtype=torch.float32),
+            size=target_size,
+            mode='bilinear',
+            align_corners=False
+        ).squeeze() # (77,64,64)
+    else:
+        attn_map = attn_map.to(dtype=torch.float32) # (77,64,64)
 
     attn_map = torch.softmax(attn_map, dim=0)
     attn_map = attn_map.reshape(attn_map.shape[0],-1) # (77,64*64)
     return attn_map
 
 
-def get_net_attn_map(batch_size=2, instance_or_negative=False):
-    net_attn_maps = []
+def get_net_attn_map(image_size, batch_size=2, instance_or_negative=False, detach=True):
+    target_size = (image_size[0]//16, image_size[1]//16)
     idx = 0 if instance_or_negative else 1
+    net_attn_maps = []
+
     for name, attn_map in attn_maps.items():
+        attn_map = attn_map.cpu() if detach else attn_map
         attn_map = torch.chunk(attn_map, batch_size)[idx] # (20, 32*32, 77) -> (10, 32*32, 77) # negative & positive CFG
         if len(attn_map.shape) == 4:
             attn_map = attn_map.squeeze()
 
-        attn_map = upscale(attn_map, 64*64) # (10,32*32,77) -> (77,64*64)
+        attn_map = upscale(attn_map, target_size) # (10,32*32,77) -> (77,64*64)
         net_attn_maps.append(attn_map) # (10,32*32,77) -> (77,64*64)
 
     net_attn_maps = torch.mean(torch.stack(net_attn_maps,dim=0),dim=0)
