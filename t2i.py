@@ -12,7 +12,7 @@ from utils import (
 cross_attn_init()
 
 pipe = StableDiffusionXLPipeline.from_pretrained(
-    "/data/intern/dan/data/base/stable-diffusion-xl-base-1.0",
+    "stabilityai/stable-diffusion-xl-base-1.0",
     torch_dtype=torch.float16,
 )
 pipe.unet = register_cross_attention_hook(pipe.unet)
