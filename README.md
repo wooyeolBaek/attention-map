@@ -10,10 +10,10 @@
 ```shell
 python -m venv .venv
 source .venv/bin/activate
-pip install accelerate diffusers transformer
+pip install diffusers accelerate transformers
 ```
 
-## Visualization
+## Visualize
 Visualize Cross Attention Map for Text-to-Image
 ```shell
 python t2i.py
