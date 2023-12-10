@@ -54,3 +54,6 @@ net_attn_maps = get_net_attn_map(image.size)
 net_attn_maps = resize_net_attn_map(net_attn_maps, image.size)
 save_net_attn_map(net_attn_maps, dir_name, pipe.tokenizer, prompt)
 ```
+
+# TODO
+1. Resize attention maps for rectangle images.
