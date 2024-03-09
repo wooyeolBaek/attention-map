@@ -14,7 +14,7 @@
 ```shell
 python -m venv .venv
 source .venv/bin/activate
-pip install diffusers==0.24.0 accelerate==0.25.0 transformers==4.35.2
+pip install diffusers==0.24.0 accelerate==0.25.0 transformers==4.36.0
 ```
 
 ## Visualize
