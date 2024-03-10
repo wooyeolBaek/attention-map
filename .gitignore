@@ -2,3 +2,4 @@ __pycache__
 attn_maps
 venv
 .venv
+.DS_Store
