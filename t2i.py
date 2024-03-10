@@ -18,7 +18,7 @@ pipe = StableDiffusionXLPipeline.from_pretrained(
 pipe.unet = register_cross_attention_hook(pipe.unet)
 pipe = pipe.to("cuda")
 
-prompt = "A photo of a black puppy, christmas atmosphere"
+prompt = "A portrait photo of a kangaroo wearing an orange hoodie and blue sunglasses standing on the grass in front of the Sydney Opera House holding a sign on the chest that says 'SDXL'!."
 image = pipe(prompt).images[0]
 image.save('test.png')
 
