@@ -1,6 +1,6 @@
 # Cross Attention Map
 
-#### For errors reposts or feature requests, please raise an issue :)
+#### For errors reports or feature requests, please raise an issue :)
 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/We-Want-GPU/diffusers-cross-attention-map-SDXL-t2i)
 
