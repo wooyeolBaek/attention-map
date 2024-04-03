@@ -489,16 +489,6 @@ def cross_attn_init():
     LoRAAttnProcessor2_0.__call__ = lora_attn_call
 
 
-def reshape_attn_map(attn_map):
-    attn_map = torch.mean(attn_map,dim=0) # mean by head dim: (20,4096,77) -> (4096,77)
-    attn_map = attn_map.permute(1,0) # (4096,77) -> (77,4096)
-    latent_size = int(math.sqrt(attn_map.shape[1]))
-    latent_shape = (attn_map.shape[0],latent_size,-1)
-    attn_map = attn_map.reshape(latent_shape) # (77,4096) -> (77,64,64)
-
-    return attn_map # torch.sum(attn_map,dim=0) = [1,1,...,1]
-
-
 def hook_fn(name):
     def forward_hook(module, input, output):
         if hasattr(module.processor, "attn_map"):
@@ -506,6 +496,7 @@ def hook_fn(name):
             del module.processor.attn_map
 
     return forward_hook
+
 
 def register_cross_attention_hook(unet):
     for name, module in unet.named_modules():
@@ -524,6 +515,7 @@ def register_cross_attention_hook(unet):
         hook = module.register_forward_hook(hook_fn(name))
     
     return unet
+
 
 def set_layer_with_name_and_path(model, target_name="attn2", current_path=""):
     from diffusers.models import Transformer2DModel
@@ -576,6 +568,7 @@ def preprocess(max_height=256, max_width=256):
     attn_map = torch.mean(attn_map, axis=0)
 
     return attn_map
+
 
 def visualize_and_save_attn_map(attn_map, tokenizer, prompt):
     # match with tokens
