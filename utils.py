@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional
 
 import torch
 import torch.nn.functional as F
+from torchvision import transforms
 
 from diffusers.utils import deprecate, BaseOutput, is_torch_version, logging
 from diffusers.models.attention_processor import (
@@ -588,8 +589,8 @@ def visualize_and_save_attn_map(attn_map, tokenizer, prompt):
     save_path = 'attn_maps'
     if not os.path.exists(save_path):
         os.mkdir(save_path)
-    from torchvision import transforms
-    to_pil = transforms.ToPILImage()
+    
+    # to_pil = transforms.ToPILImage()
     for i, (token, token_attn_map) in enumerate(zip(tokens, attn_map)):
         if token == bos_token:
             continue
@@ -597,4 +598,13 @@ def visualize_and_save_attn_map(attn_map, tokenizer, prompt):
             break
         token = token.replace('</w>','')
         token = f'{i}_<{token}>.jpg'
-        to_pil(255 * token_attn_map).save(os.path.join(save_path, token))
+
+        # low quality
+        # to_pil(255 * token_attn_map).save(os.path.join(save_path, token))
+        # to_pil(255 * (token_attn_map - torch.min(token_attn_map)) / (torch.max(token_attn_map) - torch.min(token_attn_map))).save(os.path.join(save_path, token))
+
+        token_attn_map = token_attn_map.cpu().numpy()
+        normalized_token_attn_map = (token_attn_map - np.min(token_attn_map)) / (np.max(token_attn_map) - np.min(token_attn_map)) * 255
+        normalized_token_attn_map = normalized_token_attn_map.astype(np.uint8)
+        image = Image.fromarray(normalized_token_attn_map)
+        image.save(os.path.join(save_path, token))
