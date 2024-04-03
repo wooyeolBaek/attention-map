@@ -533,11 +533,8 @@ def set_layer_with_name_and_path(model, target_name="attn2", current_path=""):
 
         new_path = current_path + '.' + name if current_path else name
         if name.endswith(target_name):
-            # print("Layer:", name)
-            # print("Path:", new_path)
             layer.processor = AttnProcessor2_0()
         
-        # 하위 모듈이 있는 경우 재귀적으로 검색
         set_layer_with_name_and_path(layer, target_name, new_path)
     
     return model
