@@ -109,4 +109,5 @@ visualize_and_save_attn_map(attn_map, pipe.tokenizer, prompt)
 ```
 
 ## TODO
-- Add options for how to combine attention maps for each layers and timsteps
+1. Add options for how to combine attention maps for each layers and timsteps
+2. Applications(prompt-to-prompt, ...)
