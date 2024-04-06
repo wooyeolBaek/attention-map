@@ -1,7 +1,8 @@
 # Cross Attention Map
 
-
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/We-Want-GPU/diffusers-cross-attention-map-SDXL-t2i)
+#### For errors reports or feature requests, please raise an issue :)
+
 
 ## Compatible models
 UNet with attn2(cross attention module) is compatible
@@ -10,7 +11,6 @@ UNet with attn2(cross attention module) is compatible
 - [sdxl-turbo](https://huggingface.co/stabilityai/sdxl-turbo)
 - ...
 
-#### For errors reports or feature requests, please raise an issue :)
 
 ## Examples
 
