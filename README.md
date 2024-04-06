@@ -1,9 +1,16 @@
 # Cross Attention Map
 
-#### For errors reports or feature requests, please raise an issue :)
 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/We-Want-GPU/diffusers-cross-attention-map-SDXL-t2i)
 
+## Compatible models
+UNet with attn2(cross attention module) is compatible
+- [stable-diffusion-2-1-base](https://huggingface.co/stabilityai/stable-diffusion-2-1-base)
+- [stable-diffusion-xl-base-1.0](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0)
+- [sdxl-turbo](https://huggingface.co/stabilityai/sdxl-turbo)
+- ...
+
+#### For errors reports or feature requests, please raise an issue :)
 
 ## Examples
 
@@ -100,3 +107,6 @@ attn_map = preprocess(max_height=height, max_width=width)
 visualize_and_save_attn_map(attn_map, pipe.tokenizer, prompt)
 #############################################
 ```
+
+## TODO
+- Add options for how to combine attention maps for each layers and timsteps
