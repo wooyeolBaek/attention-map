@@ -7,7 +7,7 @@ from typing import Any, Dict, Optional
 
 import torch
 import torch.nn.functional as F
-from torchvision import transforms
+# from torchvision import transforms
 
 from diffusers.utils import deprecate, BaseOutput, is_torch_version, logging
 from diffusers.models.attention_processor import (
