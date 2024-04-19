@@ -492,7 +492,8 @@ def cross_attn_init():
 def hook_fn(name):
     def forward_hook(module, input, output):
         if hasattr(module.processor, "attn_map"):
-            attn_maps[name] = module.processor.attn_map
+            # attn_maps[name] = module.processor.attn_map
+            attn_maps[name] = attn_maps.get(name, torch.zeros_like(module.processor.attn_map)) + module.processor.attn_map
             del module.processor.attn_map
 
     return forward_hook
