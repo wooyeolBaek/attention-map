@@ -55,7 +55,7 @@ UNet with attn2(cross attention module) is compatible
 ```shell
 python -m venv .venv
 source .venv/bin/activate
-pip install diffusers==0.24.0 accelerate==0.25.0 transformers==4.36.0
+pip install diffusers==0.24.0 accelerate==0.25.0 transformers==4.36.0 einops==0.7.0
 ```
 
 ## Visualize
