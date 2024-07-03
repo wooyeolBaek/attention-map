@@ -3,6 +3,9 @@
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/We-Want-GPU/diffusers-cross-attention-map-SDXL-t2i)
 #### For errors reports or feature requests, please raise an issue :)
 
+## Update Log
+- [2024-07-04] 🎉 (_Latest update_) Added features for saving attention maps based on timesteps and paths, and refactored the code. 🎉
+
 
 ## Compatible models
 UNet with attn2(cross attention module) is compatible
