@@ -1,7 +1,12 @@
 # Cross Attention Map
 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/We-Want-GPU/diffusers-cross-attention-map-SDXL-t2i)
-#### For errors reports or feature requests, please raise an issue :)
+
+Thanks to HuggingFace Diffusers team for the GPU sponsorship!
+
+We provide attention map extraction and visualization features compatible with the latest(`v0.29.0`) Diffusers code.
+
+For errors reports or feature requests, please raise an issue :)
 
 ## Update Log
 - [2024-07-04] 🎉 (_Latest update_) Added features for saving attention maps based on timesteps and paths, and refactored the code. 🎉
