@@ -1,5 +1,11 @@
 __pycache__
-attn_maps
+.DS_Store
+
 venv
 .venv
-.DS_Store
+
+test.png
+
+attn_maps
+attn_maps_by_timesteps
+attn_maps_by_timesteps_path
