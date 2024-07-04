@@ -4,7 +4,7 @@
 
 Thanks to HuggingFace Diffusers team for the GPU sponsorship!
 
-We provide attention map extraction and visualization features compatible with the latest(`v0.29.0`) Diffusers code.
+This repository is for extracting and visualizing attention maps, compatible with the latest Diffusers code (`v0.29.0`).
 
 For errors reports or feature requests, please raise an issue :)
 
