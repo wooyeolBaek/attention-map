@@ -1,56 +1,101 @@
-# Cross Attention Map
+# Cross Attention Map Visualization
 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/We-Want-GPU/diffusers-cross-attention-map-SDXL-t2i)
 
 Thanks to HuggingFace Diffusers team for the GPU sponsorship!
 
-This repository is for extracting and visualizing attention maps, compatible with the latest Diffusers code (`v0.29.0`).
+This repository is for extracting and visualizing cross attention maps, compatible with the latest Diffusers code (`v0.32.0`).
 
-For errors reports or feature requests, please raise an issue :)
+For errors reports or feature requests, feel free to raise an issue.
 
-## Update Log
-- [2024-07-04] 🎉 (_Latest update_) Added features for saving attention maps based on timesteps and paths, and refactored the code. 🎉
+## Update Log.
+[2024-11-12] _Stable Diffusion 3_ is compatible and supports _batch operations_! (Flux and Stable Diffusion 3.5 is not compatible yet.)
+
+[2024-07-04] Added features for _saving attention maps based on timesteps and layers_.
 
 
-## Compatible models
-UNet with attn2(cross attention module) is compatible
-- [stable-diffusion-2-1-base](https://huggingface.co/stabilityai/stable-diffusion-2-1-base)
+## Compatible models.
+<!-- Compatible with various models, including both UNet/DiT based models listed below. -->
+Compatible with various models listed below.
+- [stabilityai/stable-diffusion-3-medium](https://huggingface.co/stabilityai/stable-diffusion-3-medium)
 - [stable-diffusion-xl-base-1.0](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0)
-- [sdxl-turbo](https://huggingface.co/stabilityai/sdxl-turbo)
+- [stable-diffusion-2-1-base](https://huggingface.co/stabilityai/stable-diffusion-2-1-base)
 - ...
 
+<!-- - [sdxl-turbo](https://huggingface.co/stabilityai/sdxl-turbo) -->
+<!-- - [black-forest-labs/FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) -->
 
-## Examples
 
-<!-- <img src="./assets/t2i.png" alt="attn_map">
-<img src="./assets/attn_maps.png" alt="attn_map"> -->
-<img src="./assets/hf_spaces.png" alt="hf_spaces">
+## Example.
+
+
+<div style="text-align: center;">
+    <img src="./assets/sd3.png" alt="Image 1" width="400" height="400">
+    <img src="./assets/4--bara>.png" alt="Image 2" width="400" height="400">
+</div>
+
+
 
 <details>
-<summary>6_kangaroo</summary>
+<summary>cap-</summary>
 <div markdown="1">
 
-<img src="./assets/6_<kangaroo>.png" alt="6_kangaroo">
+<div style="text-align: center;">
+    <img src="./assets/sd3.png" alt="Image 1" width="400" height="400">
+    <img src="./assets/2-<cap-.png" alt="<cap-" width="400" height="400">
+</div>
 
 </div>
 </details>
 
 
 <details>
-<summary>10_hoodie</summary>
+<summary>-y-</summary>
 <div markdown="1">
 
-<img src="./assets/10_<hoodie>.png" alt="10_hoodie">
+<div style="text-align: center;">
+    <img src="./assets/sd3.png" alt="Image 1" width="400" height="400">
+    <img src="./assets/3--y-.png" alt="-y-" width="400" height="400">
+</div>
 
 </div>
 </details>
 
 
 <details>
-<summary>13_sunglasses</summary>
+<summary>-bara</summary>
 <div markdown="1">
 
-<img src="./assets/13_<sunglasses>.png" alt="13_sunglasses">
+<div style="text-align: center;">
+    <img src="./assets/sd3.png" alt="Image 1" width="400" height="400">
+    <img src="./assets/4--bara>.png" alt="-bara>" width="400" height="400">
+</div>
+
+</div>
+</details>
+
+
+<details>
+<summary>hello</summary>
+<div markdown="1">
+
+<div style="text-align: center;">
+    <img src="./assets/sd3.png" alt="Image 1" width="400" height="400">
+    <img src="./assets/10-<hello>.png" alt="<hello>" width="400" height="400">
+</div>
+
+</div>
+</details>
+
+
+<details>
+<summary>world</summary>
+<div markdown="1">
+
+<div style="text-align: center;">
+    <img src="./assets/sd3.png" alt="Image 1" width="400" height="400">
+    <img src="./assets/11-<world>.png" alt="<world>>" width="400" height="400">
+</div>
 
 </div>
 </details>
@@ -59,75 +104,48 @@ UNet with attn2(cross attention module) is compatible
 
 
 
-## Initialize
-```shell
-python -m venv .venv
-source .venv/bin/activate
-# or
-conda create -n attn python=3.9 -y
-conda activate attn
-
-pip install -r requirements.txt
-```
-
-## Visualize
-Visualize Cross Attention Map for Text-to-Image
-```shell
-python t2i.py
-```
-
-## How to use
-There are two methods for saving the attention map.: `save_by_timesteps_and_path` or `save_by_timesteps`(more intuitive.)
+## demo
 ```python
 import torch
-from diffusers import DiffusionPipeline
+from diffusers import StableDiffusion3Pipeline
+
 from utils import (
     attn_maps,
     cross_attn_init,
-    register_cross_attention_hook,
-    set_layer_with_name_and_path,
-    save_by_timesteps_and_path,
-    save_by_timesteps
+    init_pipeline,
+    save_attention_maps
 )
 
-##### 1. Init modules #####
+##### 1. Init redefined modules #####
 cross_attn_init()
-###########################
+#####################################
 
-pipe = DiffusionPipeline.from_pretrained(
-    "stabilityai/stable-diffusion-xl-base-1.0",
-    torch_dtype=torch.float16,
+pipe = StableDiffusion3Pipeline.from_pretrained(
+    "stabilityai/stable-diffusion-3-medium-diffusers",
+    torch_dtype=torch.bfloat16
 )
-pipe = pipe.to("cuda:0")
+pipe = pipe.to("cuda")
 
 ##### 2. Replace modules and Register hook #####
-pipe.unet = set_layer_with_name_and_path(pipe.unet)
-pipe.unet = register_cross_attention_hook(pipe.unet)
+pipe = init_pipeline(pipe)
 ################################################
 
-height = 512
-width = 768
-prompt = "A portrait photo of a kangaroo wearing an orange hoodie and blue sunglasses standing on the grass in front of the Sydney Opera House holding a sign on the chest that says 'SDXL'!."
+# recommend not using batch operations for sd3, as cpu memory could be exceeded.
+prompts = [
+    # "A photo of a puppy wearing a hat.",
+    "A capybara holding a sign that reads Hello World.",
+]
 
-image = pipe(
-    prompt,
-    height=height,
-    width=width,
+images = pipe(
+    prompts,
     num_inference_steps=15,
-).images[0]
-image.save('test.png')
+    guidance_scale=4.5,
+).images
+
+for batch, image in enumerate(images):
+    image.save(f'{batch}-sd3.png')
 
 ##### 3. Process and Save attention map #####
-print('resizing and saving ...')
-
-##### 3-1. save by timesteps and path (2~3 minutes) #####
-save_by_timesteps_and_path(pipe.tokenizer, prompt, height, width)
-#########################################################
-
-##### 3-2. save by timesteps (1~2 minutes) #####
-# save_by_timesteps(pipe.tokenizer, prompt, height, width)
-################################################
+save_attention_maps(attn_maps, pipe.tokenizer, prompts, base_dir='attn_maps', unconditional=True)
+#############################################
 ```
-
-## TODO
-1. Applications(prompt-to-prompt, ...)
