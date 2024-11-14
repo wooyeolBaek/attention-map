@@ -2,9 +2,9 @@
 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/We-Want-GPU/diffusers-cross-attention-map-SDXL-t2i)
 
-Thanks to HuggingFace Diffusers team for the GPU sponsorship!
+Thanks to HuggingFace [Diffusers](https://github.com/huggingface/diffusers) team for the GPU sponsorship!
 
-This repository is for extracting and visualizing cross attention maps, compatible with the latest Diffusers code (`v0.32.0`).
+This repository is for extracting and visualizing cross attention maps, compatible with the latest [Diffusers](https://github.com/huggingface/diffusers) code (`v0.32.0`).
 
 For errors reports or feature requests, feel free to raise an issue.
 
@@ -17,7 +17,7 @@ For errors reports or feature requests, feel free to raise an issue.
 ## Compatible models.
 <!-- Compatible with various models, including both UNet/DiT based models listed below. -->
 Compatible with various models listed below.
-- [stabilityai/stable-diffusion-3-medium](https://huggingface.co/stabilityai/stable-diffusion-3-medium)
+- [stabilityai/stable-diffusion-3-medium-diffusers](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers)
 - [stable-diffusion-xl-base-1.0](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0)
 - [stable-diffusion-2-1-base](https://huggingface.co/stabilityai/stable-diffusion-2-1-base)
 - ...
