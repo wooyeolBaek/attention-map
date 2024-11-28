@@ -1,4 +1,5 @@
-diffusers==0.32.0
+diffusers==0.31.0
 accelerate==0.25.0
 transformers==4.38.0
 einops==0.7.0
+torchvision
