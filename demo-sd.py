@@ -1,6 +1,5 @@
 import torch
-from diffusers import StableDiffusion3Pipeline
-
+from diffusers import DiffusionPipeline
 from utils import (
     attn_maps,
     cross_attn_init,
@@ -12,9 +11,9 @@ from utils import (
 cross_attn_init()
 #####################################
 
-pipe = StableDiffusion3Pipeline.from_pretrained(
-    "stabilityai/stable-diffusion-3-medium-diffusers",
-    torch_dtype=torch.bfloat16
+pipe = DiffusionPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-2-1",
+    torch_dtype=torch.float16,
 )
 pipe = pipe.to("cuda")
 
@@ -30,11 +29,10 @@ prompts = [
 images = pipe(
     prompts,
     num_inference_steps=15,
-    guidance_scale=4.5,
 ).images
 
 for batch, image in enumerate(images):
-    image.save(f'{batch}-sd3.png')
+    image.save(f'{batch}-sdxl.png')
 
 ##### 3. Process and Save attention map #####
 save_attention_maps(attn_maps, pipe.tokenizer, prompts, base_dir='attn_maps', unconditional=True)
