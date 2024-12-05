@@ -1,5 +1,7 @@
-diffusers==0.31.0
-accelerate==0.25.0
-transformers==4.38.0
-einops==0.7.0
+diffusers
+accelerate
+transformers
+sentencepiece
+protobuf
+einops
 torchvision
