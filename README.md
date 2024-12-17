@@ -4,7 +4,7 @@
 
 Thanks to HuggingFace [Diffusers](https://github.com/huggingface/diffusers) team for the GPU sponsorship!
 
-This repository is for extracting and visualizing cross attention maps, compatible with the latest [Diffusers](https://github.com/huggingface/diffusers) code (`v0.32.0`).
+This repository is for extracting and visualizing cross attention maps, based on the latest [Diffusers](https://github.com/huggingface/diffusers) code (`v0.32.0`).
 
 For errors reports or feature requests, feel free to raise an issue.
 
