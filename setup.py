@@ -18,5 +18,9 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         "diffusers>=0.29.0",
+        "accelerate",
+        "transformers",
+        "einops",
+        "torchvision",
     ],
 )
