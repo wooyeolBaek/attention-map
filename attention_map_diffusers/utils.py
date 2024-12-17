@@ -19,15 +19,7 @@ from diffusers.models.attention_processor import (
     FluxAttnProcessor2_0
 )
 
-from modules import *
-
-def cross_attn_init():
-    AttnProcessor.__call__ = attn_call
-    AttnProcessor2_0.__call__ = attn_call2_0
-    LoRAAttnProcessor.__call__ = lora_attn_call
-    LoRAAttnProcessor2_0.__call__ = lora_attn_call2_0
-    JointAttnProcessor2_0.__call__ = joint_attn_call2_0
-    FluxAttnProcessor2_0.__call__ = flux_attn_call2_0
+from .modules import *
 
 
 def hook_function(name, detach=True):
@@ -114,12 +106,18 @@ def replace_call_method_for_flux(model):
 
 
 def init_pipeline(pipeline):
+    AttnProcessor.__call__ = attn_call
+    AttnProcessor2_0.__call__ = attn_call2_0
+    LoRAAttnProcessor.__call__ = lora_attn_call
+    LoRAAttnProcessor2_0.__call__ = lora_attn_call2_0
     if 'transformer' in vars(pipeline).keys():
         if pipeline.transformer.__class__.__name__ == 'SD3Transformer2DModel':
+            JointAttnProcessor2_0.__call__ = joint_attn_call2_0
             pipeline.transformer = register_cross_attention_hook(pipeline.transformer, hook_function, 'attn')
             pipeline.transformer = replace_call_method_for_sd3(pipeline.transformer)
         
         elif pipeline.transformer.__class__.__name__ == 'FluxTransformer2DModel':
+            FluxAttnProcessor2_0.__call__ = flux_attn_call2_0
             FluxPipeline.__call__ = FluxPipeline_call
             pipeline.transformer = register_cross_attention_hook(pipeline.transformer, hook_function, 'attn')
             pipeline.transformer = replace_call_method_for_flux(pipeline.transformer)

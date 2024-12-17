@@ -9,6 +9,8 @@ This repository is for extracting and visualizing cross attention maps, compatib
 For errors reports or feature requests, feel free to raise an issue.
 
 ## Update Log.
+[2024-12-17] Refactor and add setup.py
+
 [2024-11-12] _Stable Diffusion 3_ is compatible and supports _batch operations_! (Flux and Stable Diffusion 3.5 is not compatible yet.)
 
 [2024-07-04] Added features for _saving attention maps based on timesteps and layers_.
@@ -102,23 +104,22 @@ Compatible with various models listed below.
 
 
 
-
-
 ## demo
+```bash
+pip install -e .
+pip install -r requirements.txt
+```
+
+### Stable Diffusion 3.0
 ```python
 import torch
 from diffusers import StableDiffusion3Pipeline
-
-from utils import (
+from attention_map_diffusers import (
     attn_maps,
-    cross_attn_init,
     init_pipeline,
     save_attention_maps
 )
 
-##### 1. Init redefined modules #####
-cross_attn_init()
-#####################################
 
 pipe = StableDiffusion3Pipeline.from_pretrained(
     "stabilityai/stable-diffusion-3-medium-diffusers",
@@ -126,7 +127,7 @@ pipe = StableDiffusion3Pipeline.from_pretrained(
 )
 pipe = pipe.to("cuda")
 
-##### 2. Replace modules and Register hook #####
+##### 1. Replace modules and Register hook #####
 pipe = init_pipeline(pipe)
 ################################################
 
@@ -145,7 +146,86 @@ images = pipe(
 for batch, image in enumerate(images):
     image.save(f'{batch}-sd3.png')
 
-##### 3. Process and Save attention map #####
+##### 2. Process and Save attention map #####
 save_attention_maps(attn_maps, pipe.tokenizer, prompts, base_dir='attn_maps', unconditional=True)
 #############################################
+```
+
+### Stable Diffusion XL
+```python
+import torch
+from diffusers import DiffusionPipeline
+from attention_map_diffusers import (
+    attn_maps,
+    init_pipeline,
+    save_attention_maps
+)
+
+
+pipe = DiffusionPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-xl-base-1.0",
+    torch_dtype=torch.float16,
+)
+pipe = pipe.to("cuda")
+
+##### 1. Replace modules and Register hook #####
+pipe = init_pipeline(pipe)
+################################################
+
+prompts = [
+    "A photo of a puppy wearing a hat.",
+    "A capybara holding a sign that reads Hello World.",
+]
+
+images = pipe(
+    prompts,
+    num_inference_steps=15,
+).images
+
+for batch, image in enumerate(images):
+    image.save(f'{batch}-sdxl.png')
+
+##### 2. Process and Save attention map #####
+save_attention_maps(attn_maps, pipe.tokenizer, prompts, base_dir='attn_maps', unconditional=True)
+#############################################
+```
+
+### Stable Diffusion 2.1
+```python
+import torch
+from diffusers import DiffusionPipeline
+from attention_map_diffusers import (
+    attn_maps,
+    init_pipeline,
+    save_attention_maps
+)
+
+
+pipe = DiffusionPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-2-1",
+    torch_dtype=torch.float16,
+)
+pipe = pipe.to("cuda")
+
+##### 1. Replace modules and Register hook #####
+pipe = init_pipeline(pipe)
+################################################
+
+prompts = [
+    "A photo of a puppy wearing a hat.",
+    "A capybara holding a sign that reads Hello World.",
+]
+
+images = pipe(
+    prompts,
+    num_inference_steps=15,
+).images
+
+for batch, image in enumerate(images):
+    image.save(f'{batch}-sd2-1.png')
+
+##### 2. Process and Save attention map #####
+save_attention_maps(attn_maps, pipe.tokenizer, prompts, base_dir='attn_maps', unconditional=True)
+#############################################
+
 ```

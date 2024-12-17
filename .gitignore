@@ -4,8 +4,7 @@ __pycache__
 venv
 .venv
 
-test.png
+**.egg-info
 
-attn_maps
-attn_maps_by_timesteps
-attn_maps_by_timesteps_path
+demo/attn_maps
+demo/**.png
