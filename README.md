@@ -106,8 +106,15 @@ Compatible with various models listed below.
 
 ## demo
 ```bash
+git clone https://github.com/wooyeolBaek/attention-map-diffusers.git
+cd attention-map-diffusers
 pip install -e .
 pip install -r requirements.txt
+```
+or
+```bash
+pip install attention_map_diffusers
+pip install diffusers accelerate transformers sentencepiece protobuf einops torchvision
 ```
 
 ### Stable Diffusion 3.0

@@ -8,3 +8,6 @@ venv
 
 demo/attn_maps
 demo/**.png
+
+build
+dist
